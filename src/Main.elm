@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, div, text, input)
+import Html exposing (Html, div, text, input, button)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http
@@ -14,15 +14,16 @@ main = Browser.element
     , subscriptions = subscriptions
     , view = view }
 
-type Model
-    = Initial
+type Model 
+    = Initial { url : String }
     | Failure Http.Error
     | Success Definition
 
+
 init : () -> (Model, Cmd Msg)
 init _ = 
-    ( 
-        Initial, Cmd.none 
+    ( Initial { url = "" }
+    , Cmd.none 
     )
 type alias Definition = 
     { word : String
@@ -31,23 +32,27 @@ type alias Definition =
     , offensive : Bool
     }
 type Msg 
-    = Search String
+    = Search
     | NewContent String
     | GotDef (Result Http.Error Definition)
 
+endpoint : String
+endpoint = ""
+
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg model = 
+update msg model  = 
     case msg of 
 
-    Search url -> 
-        (Initial
+    Search ->     
+       ( model
         , Http.get 
             { expect = Http.expectJson GotDef defDecoder
-            , url = url
+            , url = model.url
             }
         )
+        
     
-    NewContent newContent -> 
+    NewContent s -> 
         let 
             root = "https://www.dictionaryapi.com/api/v3/references/learners/json/"
             key = "24375962-78c5-4fbc-a585-b37ed4088caf"
@@ -55,7 +60,7 @@ update msg model =
             request word = 
                 root ++ word ++ "?" ++ key
         in
-            (Initial, updateUrl (request newContent) )
+            { model | url = request s }
     
     GotDef result -> 
         case result of 
@@ -64,9 +69,6 @@ update msg model =
         Err error -> 
             (Failure error, Cmd.none)
 
-updateUrl : String -> Msg
-updateUrl s =  Search s
-    
 defDecoder : Decoder Definition
 defDecoder = 
     map4 Definition
@@ -82,23 +84,23 @@ view model =
     [
         div[][ text "Elm Dictionary" ]
         , viewInput "text" "" NewContent
-        , viewInput "submit" "search" Search
+        , button [ onClick Search ] [ text "Search"]
         , viewResult model
     ]
+    
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   Sub.none
 
-viewInput : String -> String -> Msg -> Html Msg
+viewInput : String -> String -> (String -> Msg )-> Html Msg
 viewInput t v toMsg= 
-    if t == "text" then input[ type_ t, value v, onInput toMsg] []
-    else input[ type_ t, value v, onClick toMsg] []
+    input[ type_ t, value v, onInput toMsg] []
 
 viewResult : Model -> Html msg 
 viewResult model = 
     case model of 
-        Initial -> 
+        Initial s -> 
             div[][text ""]
         Success d -> 
             div[]
