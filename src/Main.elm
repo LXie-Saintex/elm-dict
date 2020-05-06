@@ -6,7 +6,7 @@ import Html exposing (Html, button, div, input, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Json.Decode exposing (Decoder, at, bool, index, map4, string)
+import Json.Decode exposing (Decoder, at, bool, index, map4, string, list)
 
 
 main =
@@ -27,8 +27,17 @@ type alias Model =
 type AppStatus
     = Initial
     | Failure Http.Error
-    | Success Definition
-
+    | Success Response
+type alias Definition =
+    { word : String
+    , fl : String
+    , def : String
+    , offensive : Bool
+    }
+type alias Alternatives = List String
+type Response 
+    = Def Definition 
+    | Alt Alternatives
 
 init : () -> ( Model, Cmd Msg )
 init _ =
@@ -36,19 +45,10 @@ init _ =
     , Cmd.none
     )
 
-
-type alias Definition =
-    { word : String
-    , fl : String
-    , def : String
-    , offensive : Bool
-    }
-
-
 type Msg
     = Search
     | NewContent String
-    | GotDef (Result Http.Error Definition)
+    | GotDef (Result Http.Error Response)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -85,14 +85,16 @@ update msg model =
                     ( { model | status = Failure error }, Cmd.none )
 
 
-defDecoder : Decoder Definition
+defDecoder : Decoder Response
 defDecoder =
+    if (index 0 (at [ "shortdef" ] (index 0 string))) == Err then
     map4 Definition
         (index 0 (at [ "meta", "app-shortdef", "hw" ] string))
         (index 0 (at [ "meta", "app-shortdef", "fl" ] string))
-        (index 0 (at [ "meta", "app-shortdef", "def" ] (index 0 string)))
+        (index 0 (at [ "shortdef" ] (index 0 string)))
         (index 0 (at [ "meta", "offensive" ] bool))
-
+    else 
+        Json.Decode.list string
 
 view : Model -> Browser.Document Msg
 view model =
