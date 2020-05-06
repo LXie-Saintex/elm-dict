@@ -88,7 +88,7 @@ update msg model =
 defDecoder : Decoder Definition
 defDecoder =
     map4 Definition
-        (index 0 (at [ "meta", "id" ] string))
+        (index 0 (at [ "meta", "app-shortdef", "hw" ] string))
         (index 0 (at [ "meta", "app-shortdef", "fl" ] string))
         (index 0 (at [ "meta", "app-shortdef", "def" ] (index 0 string)))
         (index 0 (at [ "meta", "offensive" ] bool))
