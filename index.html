@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="./main.css">
-		<script src="main.js" ></script>
-	</head>
-	<body>
-		
-	</body>
+  <head>
+    <link rel="stylesheet" href="./main.css" />
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div id="myapp"></div>
+    <script>
+      var app = Elm.Main.init({
+        node: document.getElementById("myapp"),
+      });
+    </script>
+  </body>
 </html>
