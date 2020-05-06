@@ -10,7 +10,7 @@ import Json.Decode exposing (Decoder, at, bool, index, map4, string)
 
 
 main =
-    Browser.element
+    Browser.document
         { init = init
         , update = update
         , subscriptions = subscriptions
@@ -18,19 +18,21 @@ main =
         }
 
 
-type alias Model = 
-    { status: AppStatus
+type alias Model =
+    { status : AppStatus
     , url : String
     }
 
-type AppStatus 
+
+type AppStatus
     = Initial
     | Failure Http.Error
     | Success Definition
 
+
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( {status = Initial, url = ""}
+    ( { status = Initial, url = "" }
     , Cmd.none
     )
 
@@ -47,6 +49,7 @@ type Msg
     = Search
     | NewContent String
     | GotDef (Result Http.Error Definition)
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -71,15 +74,15 @@ update msg model =
                 request word =
                     root ++ word ++ "?key=" ++ key
             in
-            ({ model | url = request s }, Cmd.none)
+            ( { model | url = request s }, Cmd.none )
 
         GotDef result ->
             case result of
                 Ok def ->
-                    ({ model | status = Success def}, Cmd.none)
+                    ( { model | status = Success def }, Cmd.none )
 
                 Err error ->
-                    ({ model | status = Failure error}, Cmd.none)
+                    ( { model | status = Failure error }, Cmd.none )
 
 
 defDecoder : Decoder Definition
@@ -91,14 +94,18 @@ defDecoder =
         (index 0 (at [ "meta", "offensive" ] bool))
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    div []
-        [ div [] [ text "Elm Dictionary" ]
-        , viewInput "text" NewContent
-        , button [ onClick Search ] [ text "Search" ]
-        , viewResult model
+    { title = "Elm Dictionary"
+    , body =
+        [ div []
+            [ div [] [ text "Elm Dictionary" ]
+            , viewInput "text" NewContent
+            , button [ onClick Search ] [ text "Search" ]
+            , viewResult model
+            ]
         ]
+    }
 
 
 subscriptions : Model -> Sub Msg
@@ -122,7 +129,7 @@ viewResult model =
                 [ div [] [ text d.word ]
                 , div [] [ text d.fl ]
                 , div [] [ text d.def ]
-                , checkOffense d.offensive
+                , div [] [ checkOffense d.offensive ]
                 ]
 
         Failure error ->

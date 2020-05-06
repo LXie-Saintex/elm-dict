@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Main</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -5332,7 +5318,7 @@ var $elm$core$Task$perform = F2(
 			$elm$core$Task$Perform(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
-var $elm$browser$Browser$element = _Browser_element;
+var $elm$browser$Browser$document = _Browser_document;
 var $author$project$Main$Initial = {$: 'Initial'};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -6369,51 +6355,39 @@ var $author$project$Main$viewResult = function (model) {
 	}
 };
 var $author$project$Main$view = function (model) {
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
+	return {
+		body: _List_fromArray(
 			[
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Elm Dictionary')
-					])),
-				A2($author$project$Main$viewInput, 'text', $author$project$Main$NewContent),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$Main$Search)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Search')
-					])),
-				$author$project$Main$viewResult(model)
-			]));
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Elm Dictionary')
+							])),
+						A2($author$project$Main$viewInput, 'text', $author$project$Main$NewContent),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$Search)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Search')
+							])),
+						$author$project$Main$viewResult(model)
+					]))
+			]),
+		title: 'Elm Dictionary'
+	};
 };
-var $author$project$Main$main = $elm$browser$Browser$element(
+var $author$project$Main$main = $elm$browser$Browser$document(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>
