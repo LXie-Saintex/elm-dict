@@ -6,8 +6,7 @@ import Html exposing (Html, button, div, input, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Json.Decode as Decode exposing (Decoder,map, at, bool, decodeString, index, map4, oneOf, string)
-import Json.Decode.Pipeline exposing (requiredAt)
+import Json.Decode as Decode exposing (Decoder,map, at, bool, index, map4, oneOf, string)
 
 
 main =
@@ -35,7 +34,7 @@ type alias Definition =
     { word : String
     , fl : String
     , def : String
-    , offensive : Bool
+    , isOffensive : Bool
     }
 
 
@@ -165,7 +164,7 @@ viewResult model =
                         [ div [] [ text d.word ]
                         , div [] [ text d.fl ]
                         , div [] [ text d.def ]
-                        , div [] [ checkOffense d.offensive ]
+                        , div [] [ checkOffense d.isOffensive ]
                         ]
 
                 Alt a ->
