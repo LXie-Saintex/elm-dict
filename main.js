@@ -5341,54 +5341,6 @@ var $author$project$Main$GotDef = function (a) {
 var $author$project$Main$Success = function (a) {
 	return {$: 'Success', a: a};
 };
-var $author$project$Main$Definition = F4(
-	function (word, fl, def, offensive) {
-		return {def: def, fl: fl, offensive: offensive, word: word};
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$bool = _Json_decodeBool;
-var $elm$json$Json$Decode$index = _Json_decodeIndex;
-var $elm$json$Json$Decode$map4 = _Json_map4;
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$defDecoder = A5(
-	$elm$json$Json$Decode$map4,
-	$author$project$Main$Definition,
-	A2(
-		$elm$json$Json$Decode$index,
-		0,
-		A2(
-			$elm$json$Json$Decode$at,
-			_List_fromArray(
-				['meta', 'app-shortdef', 'hw']),
-			$elm$json$Json$Decode$string)),
-	A2(
-		$elm$json$Json$Decode$index,
-		0,
-		A2(
-			$elm$json$Json$Decode$at,
-			_List_fromArray(
-				['meta', 'app-shortdef', 'fl']),
-			$elm$json$Json$Decode$string)),
-	A2(
-		$elm$json$Json$Decode$index,
-		0,
-		A2(
-			$elm$json$Json$Decode$at,
-			_List_fromArray(
-				['meta', 'app-shortdef', 'def']),
-			A2($elm$json$Json$Decode$index, 0, $elm$json$Json$Decode$string))),
-	A2(
-		$elm$json$Json$Decode$index,
-		0,
-		A2(
-			$elm$json$Json$Decode$at,
-			_List_fromArray(
-				['meta', 'offensive']),
-			$elm$json$Json$Decode$bool)));
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
@@ -6176,6 +6128,81 @@ var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
 		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
+var $author$project$Main$Alt = function (a) {
+	return {$: 'Alt', a: a};
+};
+var $author$project$Main$Alternatives = F4(
+	function (first, second, third, fourth) {
+		return {first: first, fourth: fourth, second: second, third: third};
+	});
+var $elm$json$Json$Decode$index = _Json_decodeIndex;
+var $elm$json$Json$Decode$map4 = _Json_map4;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$altDecoder = A2(
+	$elm$json$Json$Decode$map,
+	$author$project$Main$Alt,
+	A5(
+		$elm$json$Json$Decode$map4,
+		$author$project$Main$Alternatives,
+		A2($elm$json$Json$Decode$index, 0, $elm$json$Json$Decode$string),
+		A2($elm$json$Json$Decode$index, 1, $elm$json$Json$Decode$string),
+		A2($elm$json$Json$Decode$index, 2, $elm$json$Json$Decode$string),
+		A2($elm$json$Json$Decode$index, 3, $elm$json$Json$Decode$string)));
+var $author$project$Main$Def = function (a) {
+	return {$: 'Def', a: a};
+};
+var $author$project$Main$Definition = F4(
+	function (word, fl, def, offensive) {
+		return {def: def, fl: fl, offensive: offensive, word: word};
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $author$project$Main$defDecoder = A2(
+	$elm$json$Json$Decode$map,
+	$author$project$Main$Def,
+	A5(
+		$elm$json$Json$Decode$map4,
+		$author$project$Main$Definition,
+		A2(
+			$elm$json$Json$Decode$index,
+			0,
+			A2(
+				$elm$json$Json$Decode$at,
+				_List_fromArray(
+					['meta', 'app-shortdef', 'hw']),
+				$elm$json$Json$Decode$string)),
+		A2(
+			$elm$json$Json$Decode$index,
+			0,
+			A2(
+				$elm$json$Json$Decode$at,
+				_List_fromArray(
+					['meta', 'app-shortdef', 'fl']),
+				$elm$json$Json$Decode$string)),
+		A2(
+			$elm$json$Json$Decode$index,
+			0,
+			A2(
+				$elm$json$Json$Decode$at,
+				_List_fromArray(
+					['shortdef']),
+				A2($elm$json$Json$Decode$index, 0, $elm$json$Json$Decode$string))),
+		A2(
+			$elm$json$Json$Decode$index,
+			0,
+			A2(
+				$elm$json$Json$Decode$at,
+				_List_fromArray(
+					['meta', 'offensive']),
+				$elm$json$Json$Decode$bool))));
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
+var $author$project$Main$respDecoder = $elm$json$Json$Decode$oneOf(
+	_List_fromArray(
+		[$author$project$Main$defDecoder, $author$project$Main$altDecoder]));
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -6184,7 +6211,7 @@ var $author$project$Main$update = F2(
 					model,
 					$elm$http$Http$get(
 						{
-							expect: A2($elm$http$Http$expectJson, $author$project$Main$GotDef, $author$project$Main$defDecoder),
+							expect: A2($elm$http$Http$expectJson, $author$project$Main$GotDef, $author$project$Main$respDecoder),
 							url: model.url
 						}));
 			case 'NewContent':
@@ -6313,41 +6340,80 @@ var $author$project$Main$viewResult = function (model) {
 						$elm$html$Html$text('')
 					]));
 		case 'Success':
-			var d = _v0.a;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$elm$html$Html$text(d.word)
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$elm$html$Html$text(d.fl)
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$elm$html$Html$text(d.def)
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$author$project$Main$checkOffense(d.offensive)
-							]))
-					]));
+			var resp = _v0.a;
+			if (resp.$ === 'Def') {
+				var d = resp.a;
+				return A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(d.word)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(d.fl)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(d.def)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$author$project$Main$checkOffense(d.offensive)
+								]))
+						]));
+			} else {
+				var a = resp.a;
+				return A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(a.first)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(a.second)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(a.third)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(a.fourth)
+								]))
+						]));
+			}
 		default:
 			var error = _v0.a;
 			return $elm$html$Html$text(

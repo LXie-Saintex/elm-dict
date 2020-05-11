@@ -6,7 +6,8 @@ import Html exposing (Html, button, div, input, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Json.Decode exposing (Decoder, at, bool, index, list, map4, string)
+import Json.Decode as Decode exposing (Decoder,map, at, bool, decodeString, index, map4, oneOf, string)
+import Json.Decode.Pipeline exposing (requiredAt)
 
 
 main =
@@ -39,7 +40,11 @@ type alias Definition =
 
 
 type alias Alternatives =
-    List String
+    { first : String
+    , second : String
+    , third : String
+    , fourth : String
+    }
 
 
 type Response
@@ -66,7 +71,7 @@ update msg model =
         Search ->
             ( model
             , Http.get
-                { expect = Http.expectJson GotDef defDecoder
+                { expect = Http.expectJson GotDef respDecoder
                 , url = model.url
                 }
             )
@@ -96,15 +101,31 @@ update msg model =
 
 defDecoder : Decoder Response
 defDecoder =
-    if index 0 (at [ "shortdef" ] (index 0 string)) == Err then
-        map4 Definition
-            (index 0 (at [ "meta", "app-shortdef", "hw" ] string))
-            (index 0 (at [ "meta", "app-shortdef", "fl" ] string))
-            (index 0 (at [ "shortdef" ] (index 0 string)))
-            (index 0 (at [ "meta", "offensive" ] bool))
+    Decode.map Def 
+        (map4 Definition
+                (index 0 (at [ "meta", "app-shortdef", "hw" ] string))
+                (index 0 (at [ "meta", "app-shortdef", "fl" ] string))
+                (index 0 (at [ "shortdef" ] (index 0 string)))
+                (index 0 (at [ "meta", "offensive" ] bool)))
+   
 
-    else
-        Json.Decode.list string
+
+altDecoder : Decoder Response
+altDecoder =
+    Decode.map Alt
+        (map4 Alternatives
+            (index 0 string)
+            (index 1 string)
+            (index 2 string)
+            (index 3 string))
+
+
+respDecoder : Decoder Response
+respDecoder =
+    oneOf
+        [ defDecoder
+        , altDecoder
+        ]
 
 
 view : Model -> Browser.Document Msg
@@ -137,13 +158,23 @@ viewResult model =
         Initial ->
             div [] [ text "" ]
 
-        Success d ->
-            div []
-                [ div [] [ text d.word ]
-                , div [] [ text d.fl ]
-                , div [] [ text d.def ]
-                , div [] [ checkOffense d.offensive ]
-                ]
+        Success resp ->
+            case resp of
+                Def d ->
+                    div []
+                        [ div [] [ text d.word ]
+                        , div [] [ text d.fl ]
+                        , div [] [ text d.def ]
+                        , div [] [ checkOffense d.offensive ]
+                        ]
+
+                Alt a ->
+                    div [] 
+                        [ div [] [text a.first ]
+                        , div [] [text a.second ]
+                        , div [] [text a.third ]
+                        , div [] [text a.fourth ]
+                        ]
 
         Failure error ->
             text (Debug.toString error)
