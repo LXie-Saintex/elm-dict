@@ -6,7 +6,7 @@ import Html exposing (Html, button, div, input, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Json.Decode as Decode exposing (Decoder,map, at, bool, index, map4, oneOf, string)
+import Json.Decode as Decode exposing (Decoder, at, bool, index, map, map4, oneOf, string)
 
 
 main =
@@ -100,13 +100,13 @@ update msg model =
 
 defDecoder : Decoder Response
 defDecoder =
-    Decode.map Def 
+    Decode.map Def
         (map4 Definition
-                (index 0 (at [ "meta", "app-shortdef", "hw" ] string))
-                (index 0 (at [ "meta", "app-shortdef", "fl" ] string))
-                (index 0 (at [ "shortdef" ] (index 0 string)))
-                (index 0 (at [ "meta", "offensive" ] bool)))
-   
+            (index 0 (at [ "meta", "app-shortdef", "hw" ] string))
+            (index 0 (at [ "meta", "app-shortdef", "fl" ] string))
+            (index 0 (at [ "shortdef" ] (index 0 string)))
+            (index 0 (at [ "meta", "offensive" ] bool))
+        )
 
 
 altDecoder : Decoder Response
@@ -116,7 +116,8 @@ altDecoder =
             (index 0 string)
             (index 1 string)
             (index 2 string)
-            (index 3 string))
+            (index 3 string)
+        )
 
 
 respDecoder : Decoder Response
@@ -168,11 +169,11 @@ viewResult model =
                         ]
 
                 Alt a ->
-                    div [] 
-                        [ div [] [text a.first ]
-                        , div [] [text a.second ]
-                        , div [] [text a.third ]
-                        , div [] [text a.fourth ]
+                    div []
+                        [ div [] [ text a.first ]
+                        , div [] [ text a.second ]
+                        , div [] [ text a.third ]
+                        , div [] [ text a.fourth ]
                         ]
 
         Failure error ->
