@@ -170,7 +170,8 @@ viewResult model =
 
                 Alt a ->
                     div []
-                        [ div [] [ text a.first ]
+                        [ text "Did you mean: "
+                        , div [] [ text a.first ]
                         , div [] [ text a.second ]
                         , div [] [ text a.third ]
                         , div [] [ text a.fourth ]

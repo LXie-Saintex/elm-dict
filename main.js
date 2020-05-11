@@ -6152,8 +6152,8 @@ var $author$project$Main$Def = function (a) {
 	return {$: 'Def', a: a};
 };
 var $author$project$Main$Definition = F4(
-	function (word, fl, def, offensive) {
-		return {def: def, fl: fl, offensive: offensive, word: word};
+	function (word, fl, def, isOffensive) {
+		return {def: def, fl: fl, isOffensive: isOffensive, word: word};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$at = F2(
@@ -6374,7 +6374,7 @@ var $author$project$Main$viewResult = function (model) {
 							_List_Nil,
 							_List_fromArray(
 								[
-									$author$project$Main$checkOffense(d.offensive)
+									$author$project$Main$checkOffense(d.isOffensive)
 								]))
 						]));
 			} else {
@@ -6384,6 +6384,7 @@ var $author$project$Main$viewResult = function (model) {
 					_List_Nil,
 					_List_fromArray(
 						[
+							$elm$html$Html$text('Did you mean: '),
 							A2(
 							$elm$html$Html$div,
 							_List_Nil,
