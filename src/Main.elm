@@ -62,17 +62,22 @@ type Msg
     = Search
     | NewContent String
     | GotDef (Result Http.Error Response)
-
+    | GotProgress Http.Progress
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Search ->
             ( model
-            , Http.get
-                { expect = Http.expectJson GotDef respDecoder
-                , url = model.url
-                }
+            , Http.request
+                    { method = "GET"
+                    , headers = []
+                    , url = model.url
+                    , body = Http.emptyBody
+                    , expect = Http.expectJson GotDef respDecoder
+                    , timeout = Just 2000.0
+                    , tracker = Just "word"
+                    }
             )
 
         NewContent s ->
@@ -97,6 +102,16 @@ update msg model =
                 Err error ->
                     ( { model | status = Failure error }, Cmd.none )
 
+        GotProgress p -> 
+            case p of 
+                Http.Sending track -> 
+                    if Http.fractionSent track /= 0.0 then 
+                    (model, Http.cancel "word")
+                    else 
+                    (model, Cmd.none)
+
+                Http.Receiving track -> 
+                    (model, Cmd.none)
 
 defDecoder : Decoder Response
 defDecoder =
@@ -135,7 +150,7 @@ view model =
         [ div []
             [ div [] [ text "Elm Dictionary" ]
             , viewInput "text" NewContent
-            , button [ onClick Search ] [ text "Search" ]
+            , button [ onClick Search, attribute "data-cy" "submit"] [ text "Search" ]
             , viewResult model
             ]
         ]
@@ -144,12 +159,12 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Http.track "word" GotProgress
 
 
 viewInput : String -> (String -> Msg) -> Html Msg
 viewInput t toMsg =
-    input [ type_ t, onInput toMsg ] []
+    input [ type_ t, onInput toMsg, attribute "data-cy" "input" ] []
 
 
 viewResult : Model -> Html Msg
@@ -162,10 +177,10 @@ viewResult model =
             case resp of
                 Def d ->
                     div []
-                        [ div [] [ text d.word ]
-                        , div [] [ text d.fl ]
-                        , div [] [ text d.def ]
-                        , div [] [ checkOffense d.isOffensive ]
+                        [ div [ attribute "data-cy" "word" ] [ text d.word ]
+                        , div [ attribute "data-cy" "fl" ] [ text d.fl ]
+                        , div [ attribute "data-cy" "def" ] [ text d.def ]
+                        , div [ attribute "data-cy" "isOffensive" ] [ checkOffense d.isOffensive ]
                         ]
 
                 Alt a ->
@@ -178,8 +193,22 @@ viewResult model =
                         ]
 
         Failure error ->
-            text (Debug.toString error)
+            case error of 
+                Http.BadBody _->     
+                    div [ attribute "data-cy" "msg"] [ text "Invalid entries"  ]
 
+                Http.NetworkError -> 
+                    div [ attribute "data-cy" "msg"] [text "No internet connection" ]
+                
+                Http.BadStatus _ -> 
+                    div [ attribute "data-cy" "msg"] [text "Something's wrong with Merriam-Webster API, try later?" ]
+
+                Http.BadUrl _ -> 
+                    div [ attribute "data-cy" "msg"] [text "URL invalid" ]
+                
+                Http.Timeout -> 
+                    div [ attribute "data-cy" "msg"] [text "Time out, try again?" ]
+                
 
 checkOffense : Bool -> Html msg
 checkOffense b =

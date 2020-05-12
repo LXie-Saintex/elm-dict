@@ -5327,21 +5327,21 @@ var $author$project$Main$init = function (_v0) {
 		{status: $author$project$Main$Initial, url: ''},
 		$elm$core$Platform$Cmd$none);
 };
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$none;
+var $author$project$Main$GotProgress = function (a) {
+	return {$: 'GotProgress', a: a};
 };
-var $author$project$Main$Failure = function (a) {
-	return {$: 'Failure', a: a};
-};
-var $author$project$Main$GotDef = function (a) {
-	return {$: 'GotDef', a: a};
-};
-var $author$project$Main$Success = function (a) {
-	return {$: 'Success', a: a};
-};
-var $elm$json$Json$Decode$decodeString = _Json_runOnString;
+var $elm$http$Http$MySub = F2(
+	function (a, b) {
+		return {$: 'MySub', a: a, b: b};
+	});
+var $elm$http$Http$State = F2(
+	function (reqs, subs) {
+		return {reqs: reqs, subs: subs};
+	});
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $elm$http$Http$init = $elm$core$Task$succeed(
+	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
 		return {$: 'BadStatus_', a: a, b: b};
@@ -5361,8 +5361,6 @@ var $elm$http$Http$Sending = function (a) {
 	return {$: 'Sending', a: a};
 };
 var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
-var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Maybe$isJust = function (maybe) {
 	if (maybe.$ === 'Just') {
 		return true;
@@ -5884,87 +5882,6 @@ var $elm$core$Dict$update = F3(
 			return A2($elm$core$Dict$remove, targetKey, dictionary);
 		}
 	});
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
-var $elm$http$Http$expectStringResponse = F2(
-	function (toMsg, toResult) {
-		return A3(
-			_Http_expect,
-			'',
-			$elm$core$Basics$identity,
-			A2($elm$core$Basics$composeR, toResult, toMsg));
-	});
-var $elm$core$Result$mapError = F2(
-	function (f, result) {
-		if (result.$ === 'Ok') {
-			var v = result.a;
-			return $elm$core$Result$Ok(v);
-		} else {
-			var e = result.a;
-			return $elm$core$Result$Err(
-				f(e));
-		}
-	});
-var $elm$http$Http$BadBody = function (a) {
-	return {$: 'BadBody', a: a};
-};
-var $elm$http$Http$BadStatus = function (a) {
-	return {$: 'BadStatus', a: a};
-};
-var $elm$http$Http$BadUrl = function (a) {
-	return {$: 'BadUrl', a: a};
-};
-var $elm$http$Http$NetworkError = {$: 'NetworkError'};
-var $elm$http$Http$Timeout = {$: 'Timeout'};
-var $elm$http$Http$resolve = F2(
-	function (toResult, response) {
-		switch (response.$) {
-			case 'BadUrl_':
-				var url = response.a;
-				return $elm$core$Result$Err(
-					$elm$http$Http$BadUrl(url));
-			case 'Timeout_':
-				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 'NetworkError_':
-				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 'BadStatus_':
-				var metadata = response.a;
-				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.statusCode));
-			default:
-				var body = response.b;
-				return A2(
-					$elm$core$Result$mapError,
-					$elm$http$Http$BadBody,
-					toResult(body));
-		}
-	});
-var $elm$http$Http$expectJson = F2(
-	function (toMsg, decoder) {
-		return A2(
-			$elm$http$Http$expectStringResponse,
-			toMsg,
-			$elm$http$Http$resolve(
-				function (string) {
-					return A2(
-						$elm$core$Result$mapError,
-						$elm$json$Json$Decode$errorToString,
-						A2($elm$json$Json$Decode$decodeString, decoder, string));
-				}));
-	});
-var $elm$http$Http$emptyBody = _Http_emptyBody;
-var $elm$http$Http$Request = function (a) {
-	return {$: 'Request', a: a};
-};
-var $elm$http$Http$State = F2(
-	function (reqs, subs) {
-		return {reqs: reqs, subs: subs};
-	});
-var $elm$http$Http$init = $elm$core$Task$succeed(
-	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
 var $elm$core$Process$kill = _Scheduler_kill;
 var $elm$core$Process$spawn = _Scheduler_spawn;
 var $elm$http$Http$updateReqs = F3(
@@ -6083,6 +6000,9 @@ var $elm$http$Http$onSelfMsg = F3(
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 'Cancel', a: a};
 };
+var $elm$http$Http$Request = function (a) {
+	return {$: 'Request', a: a};
+};
 var $elm$http$Http$cmdMap = F2(
 	function (func, cmd) {
 		if (cmd.$ === 'Cancel') {
@@ -6103,9 +6023,10 @@ var $elm$http$Http$cmdMap = F2(
 				});
 		}
 	});
-var $elm$http$Http$MySub = F2(
-	function (a, b) {
-		return {$: 'MySub', a: a, b: b};
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
 	});
 var $elm$http$Http$subMap = F2(
 	function (func, _v0) {
@@ -6119,14 +6040,107 @@ var $elm$http$Http$subMap = F2(
 _Platform_effectManagers['Http'] = _Platform_createManager($elm$http$Http$init, $elm$http$Http$onEffects, $elm$http$Http$onSelfMsg, $elm$http$Http$cmdMap, $elm$http$Http$subMap);
 var $elm$http$Http$command = _Platform_leaf('Http');
 var $elm$http$Http$subscription = _Platform_leaf('Http');
+var $elm$http$Http$track = F2(
+	function (tracker, toMsg) {
+		return $elm$http$Http$subscription(
+			A2($elm$http$Http$MySub, tracker, toMsg));
+	});
+var $author$project$Main$subscriptions = function (model) {
+	return A2($elm$http$Http$track, 'word', $author$project$Main$GotProgress);
+};
+var $author$project$Main$Failure = function (a) {
+	return {$: 'Failure', a: a};
+};
+var $author$project$Main$GotDef = function (a) {
+	return {$: 'GotDef', a: a};
+};
+var $author$project$Main$Success = function (a) {
+	return {$: 'Success', a: a};
+};
+var $elm$http$Http$cancel = function (tracker) {
+	return $elm$http$Http$command(
+		$elm$http$Http$Cancel(tracker));
+};
+var $elm$http$Http$emptyBody = _Http_emptyBody;
+var $elm$json$Json$Decode$decodeString = _Json_runOnString;
+var $elm$http$Http$expectStringResponse = F2(
+	function (toMsg, toResult) {
+		return A3(
+			_Http_expect,
+			'',
+			$elm$core$Basics$identity,
+			A2($elm$core$Basics$composeR, toResult, toMsg));
+	});
+var $elm$core$Result$mapError = F2(
+	function (f, result) {
+		if (result.$ === 'Ok') {
+			var v = result.a;
+			return $elm$core$Result$Ok(v);
+		} else {
+			var e = result.a;
+			return $elm$core$Result$Err(
+				f(e));
+		}
+	});
+var $elm$http$Http$BadBody = function (a) {
+	return {$: 'BadBody', a: a};
+};
+var $elm$http$Http$BadStatus = function (a) {
+	return {$: 'BadStatus', a: a};
+};
+var $elm$http$Http$BadUrl = function (a) {
+	return {$: 'BadUrl', a: a};
+};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
+var $elm$http$Http$resolve = F2(
+	function (toResult, response) {
+		switch (response.$) {
+			case 'BadUrl_':
+				var url = response.a;
+				return $elm$core$Result$Err(
+					$elm$http$Http$BadUrl(url));
+			case 'Timeout_':
+				return $elm$core$Result$Err($elm$http$Http$Timeout);
+			case 'NetworkError_':
+				return $elm$core$Result$Err($elm$http$Http$NetworkError);
+			case 'BadStatus_':
+				var metadata = response.a;
+				return $elm$core$Result$Err(
+					$elm$http$Http$BadStatus(metadata.statusCode));
+			default:
+				var body = response.b;
+				return A2(
+					$elm$core$Result$mapError,
+					$elm$http$Http$BadBody,
+					toResult(body));
+		}
+	});
+var $elm$http$Http$expectJson = F2(
+	function (toMsg, decoder) {
+		return A2(
+			$elm$http$Http$expectStringResponse,
+			toMsg,
+			$elm$http$Http$resolve(
+				function (string) {
+					return A2(
+						$elm$core$Result$mapError,
+						$elm$json$Json$Decode$errorToString,
+						A2($elm$json$Json$Decode$decodeString, decoder, string));
+				}));
+	});
+var $elm$core$Basics$clamp = F3(
+	function (low, high, number) {
+		return (_Utils_cmp(number, low) < 0) ? low : ((_Utils_cmp(number, high) > 0) ? high : number);
+	});
+var $elm$http$Http$fractionSent = function (p) {
+	return (!p.size) ? 1 : A3($elm$core$Basics$clamp, 0, 1, p.sent / p.size);
+};
+var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
 			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
-};
-var $elm$http$Http$get = function (r) {
-	return $elm$http$Http$request(
-		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
 var $author$project$Main$Alt = function (a) {
 	return {$: 'Alt', a: a};
@@ -6209,9 +6223,14 @@ var $author$project$Main$update = F2(
 			case 'Search':
 				return _Utils_Tuple2(
 					model,
-					$elm$http$Http$get(
+					$elm$http$Http$request(
 						{
+							body: $elm$http$Http$emptyBody,
 							expect: A2($elm$http$Http$expectJson, $author$project$Main$GotDef, $author$project$Main$respDecoder),
+							headers: _List_Nil,
+							method: 'GET',
+							timeout: $elm$core$Maybe$Nothing,
+							tracker: $elm$core$Maybe$Just('word'),
 							url: model.url
 						}));
 			case 'NewContent':
@@ -6228,7 +6247,7 @@ var $author$project$Main$update = F2(
 							url: request(s)
 						}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			case 'GotDef':
 				var result = msg.a;
 				if (result.$ === 'Ok') {
 					var def = result.a;
@@ -6249,12 +6268,31 @@ var $author$project$Main$update = F2(
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
+			default:
+				var p = msg.a;
+				if (p.$ === 'Sending') {
+					var track = p.a;
+					return (!(!$elm$http$Http$fractionSent(track))) ? _Utils_Tuple2(
+						model,
+						$elm$http$Http$cancel('word')) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				} else {
+					var track = p.a;
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 		}
 	});
 var $author$project$Main$NewContent = function (a) {
 	return {$: 'NewContent', a: a};
 };
 var $author$project$Main$Search = {$: 'Search'};
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -6320,7 +6358,8 @@ var $author$project$Main$viewInput = F2(
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$type_(t),
-					$elm$html$Html$Events$onInput(toMsg)
+					$elm$html$Html$Events$onInput(toMsg),
+					A2($elm$html$Html$Attributes$attribute, 'data-cy', 'input')
 				]),
 			_List_Nil);
 	});
@@ -6350,28 +6389,40 @@ var $author$project$Main$viewResult = function (model) {
 						[
 							A2(
 							$elm$html$Html$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$attribute, 'data-cy', 'word')
+								]),
 							_List_fromArray(
 								[
 									$elm$html$Html$text(d.word)
 								])),
 							A2(
 							$elm$html$Html$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$attribute, 'data-cy', 'fl')
+								]),
 							_List_fromArray(
 								[
 									$elm$html$Html$text(d.fl)
 								])),
 							A2(
 							$elm$html$Html$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$attribute, 'data-cy', 'def')
+								]),
 							_List_fromArray(
 								[
 									$elm$html$Html$text(d.def)
 								])),
 							A2(
 							$elm$html$Html$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$attribute, 'data-cy', 'isOffensive')
+								]),
 							_List_fromArray(
 								[
 									$author$project$Main$checkOffense(d.isOffensive)
@@ -6417,8 +6468,66 @@ var $author$project$Main$viewResult = function (model) {
 			}
 		default:
 			var error = _v0.a;
-			return $elm$html$Html$text(
-				$elm$core$Debug$toString(error));
+			switch (error.$) {
+				case 'BadBody':
+					var s = error.a;
+					return A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$attribute, 'data-cy', 'msg')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Invalid entries'),
+								$elm$html$Html$text(
+								$elm$core$Debug$toString(s))
+							]));
+				case 'NetworkError':
+					return A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$attribute, 'data-cy', 'msg')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('No internet connection')
+							]));
+				case 'BadStatus':
+					return A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$attribute, 'data-cy', 'msg')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Something\'s wrong with Merriam-Webster API, try later?')
+							]));
+				case 'BadUrl':
+					return A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$attribute, 'data-cy', 'msg')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('You have exceeded the daily request limitations')
+							]));
+				default:
+					return A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$attribute, 'data-cy', 'msg')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('I didn\'t get a response from the server, try again?')
+							]));
+			}
 	}
 };
 var $author$project$Main$view = function (model) {
@@ -6442,7 +6551,8 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Events$onClick($author$project$Main$Search)
+								$elm$html$Html$Events$onClick($author$project$Main$Search),
+								A2($elm$html$Html$Attributes$attribute, 'data-cy', 'submit')
 							]),
 						_List_fromArray(
 							[

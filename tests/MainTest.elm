@@ -2,7 +2,7 @@ module MainTest exposing (..)
 
 import Expect exposing (equal)
 import Json.Decode
-import Main exposing (Response, respDecoder)
+import Main exposing (respDecoder)
 import Test exposing (..)
 
 
@@ -66,3 +66,4 @@ suite =
                     Expect.equal expected actual
             ]
         ]
+    
