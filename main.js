@@ -9296,9 +9296,19 @@ var $author$project$Main$responseDiv = $rtfeldman$elm_css$Css$batch(
 			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255)),
 			$rtfeldman$elm_css$Css$boxSizing($rtfeldman$elm_css$Css$borderBox)
 		]));
-var $rtfeldman$elm_css$Css$textTransform = $rtfeldman$elm_css$Css$prop1('text-transform');
 var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
 var $rtfeldman$elm_css$Css$zero = {length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, number: $rtfeldman$elm_css$Css$Structure$Compatible, numericValue: 0, outline: $rtfeldman$elm_css$Css$Structure$Compatible, unitLabel: '', units: $rtfeldman$elm_css$Css$UnitlessInteger, value: '0'};
+var $author$project$Main$sideNote = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$color(
+			A3($rtfeldman$elm_css$Css$rgb, 100, 100, 100)),
+			A2(
+			$rtfeldman$elm_css$Css$margin2,
+			$rtfeldman$elm_css$Css$px(20),
+			$rtfeldman$elm_css$Css$zero)
+		]));
+var $rtfeldman$elm_css$Css$textTransform = $rtfeldman$elm_css$Css$prop1('text-transform');
 var $author$project$Main$viewResult = function (model) {
 	var _v0 = model.status;
 	switch (_v0.$) {
@@ -9348,14 +9358,7 @@ var $author$project$Main$viewResult = function (model) {
 									A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'fl'),
 									$rtfeldman$elm_css$Html$Styled$Attributes$css(
 									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Css$color(
-											A3($rtfeldman$elm_css$Css$rgb, 100, 100, 100)),
-											A2(
-											$rtfeldman$elm_css$Css$margin2,
-											$rtfeldman$elm_css$Css$px(20),
-											$rtfeldman$elm_css$Css$zero)
-										]))
+										[$author$project$Main$sideNote]))
 								]),
 							_List_fromArray(
 								[
@@ -9375,7 +9378,10 @@ var $author$project$Main$viewResult = function (model) {
 							$rtfeldman$elm_css$Html$Styled$div,
 							_List_fromArray(
 								[
-									A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'isOffensive')
+									A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'isOffensive'),
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(
+									_List_fromArray(
+										[$author$project$Main$sideNote]))
 								]),
 							_List_fromArray(
 								[
