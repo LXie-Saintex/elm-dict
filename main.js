@@ -6229,7 +6229,7 @@ var $author$project$Main$update = F2(
 							expect: A2($elm$http$Http$expectJson, $author$project$Main$GotDef, $author$project$Main$respDecoder),
 							headers: _List_Nil,
 							method: 'GET',
-							timeout: $elm$core$Maybe$Nothing,
+							timeout: $elm$core$Maybe$Just(2000.0),
 							tracker: $elm$core$Maybe$Just('word'),
 							url: model.url
 						}));
@@ -6271,12 +6271,11 @@ var $author$project$Main$update = F2(
 			default:
 				var p = msg.a;
 				if (p.$ === 'Sending') {
-					var track = p.a;
-					return (!(!$elm$http$Http$fractionSent(track))) ? _Utils_Tuple2(
+					var s = p.a;
+					return ($elm$http$Http$fractionSent(s) !== 0.0) ? _Utils_Tuple2(
 						model,
 						$elm$http$Http$cancel('word')) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
-					var track = p.a;
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 		}
@@ -6366,7 +6365,6 @@ var $author$project$Main$viewInput = F2(
 var $author$project$Main$checkOffense = function (b) {
 	return b ? $elm$html$Html$text('Offensive: true') : $elm$html$Html$text('Offensive: false');
 };
-var $elm$core$Debug$toString = _Debug_toString;
 var $author$project$Main$viewResult = function (model) {
 	var _v0 = model.status;
 	switch (_v0.$) {
@@ -6470,7 +6468,6 @@ var $author$project$Main$viewResult = function (model) {
 			var error = _v0.a;
 			switch (error.$) {
 				case 'BadBody':
-					var s = error.a;
 					return A2(
 						$elm$html$Html$div,
 						_List_fromArray(
@@ -6479,9 +6476,7 @@ var $author$project$Main$viewResult = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Invalid entries'),
-								$elm$html$Html$text(
-								$elm$core$Debug$toString(s))
+								$elm$html$Html$text('Invalid entries')
 							]));
 				case 'NetworkError':
 					return A2(
@@ -6514,7 +6509,7 @@ var $author$project$Main$viewResult = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('You have exceeded the daily request limitations')
+								$elm$html$Html$text('URL invalid')
 							]));
 				default:
 					return A2(
@@ -6525,7 +6520,7 @@ var $author$project$Main$viewResult = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('I didn\'t get a response from the server, try again?')
+								$elm$html$Html$text('Time out, try again?')
 							]));
 			}
 	}

@@ -2,19 +2,23 @@ module Main exposing (..)
 
 import Browser
 import Debug
-import Html exposing (Html, button, div, input, text)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
+-- import Html exposing (Html, button, div, input, text)
+-- import Html.Attributes exposing (..)
+-- import Html.Events exposing (onClick, onInput)
 import Http
 import Json.Decode as Decode exposing (Decoder, at, bool, index, map, map4, oneOf, string)
+import Styles exposing (..)
 
+import Css exposing (..)
+import Html.Styled as H exposing (Html)
+import Html.Styled.Attributes as A 
 
 main =
     Browser.document
         { init = init
         , update = update
         , subscriptions = subscriptions
-        , view = view
+        , view = view 
         }
 
 
@@ -62,7 +66,8 @@ type Msg
     = Search
     | NewContent String
     | GotDef (Result Http.Error Response)
-    | GotProgress Http.Progress
+    -- | GotProgress Http.Progress
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -70,14 +75,15 @@ update msg model =
         Search ->
             ( model
             , Http.request
-                    { method = "GET"
-                    , headers = []
-                    , url = model.url
-                    , body = Http.emptyBody
-                    , expect = Http.expectJson GotDef respDecoder
-                    , timeout = Just 2000.0
-                    , tracker = Just "word"
-                    }
+                { method = "GET"
+                , headers = []
+                , url = model.url
+                , body = Http.emptyBody
+                , expect = Http.expectJson GotDef respDecoder
+                , timeout = Just 2000.0
+                , tracker = Nothing
+                -- , tracker = Just "word"
+                }
             )
 
         NewContent s ->
@@ -102,17 +108,18 @@ update msg model =
                 Err error ->
                     ( { model | status = Failure error }, Cmd.none )
 
-        GotProgress p -> 
-            case p of 
-                Http.Sending track -> 
-                    if Http.fractionSent track /= 0.0 then 
-                    (model, Http.cancel "word")
-                    else 
-                    (model, Cmd.none)
+        -- GotProgress p ->
+        --     case p of 
+        --         Http.Sending s -> 
+        --             if Http.fractionSent s /= 0.0 then
+        --                 (model, Http.cancel "word")
+        --             else 
+        --                 (model, Cmd.none)
 
-                Http.Receiving track -> 
-                    (model, Cmd.none)
+        --         Http.Receiving _-> 
+        --             (model, Cmd.none)
 
+-- newReq : String -> Model -> List String
 defDecoder : Decoder Response
 defDecoder =
     Decode.map Def
@@ -146,11 +153,15 @@ respDecoder =
 view : Model -> Browser.Document Msg
 view model =
     { title = "Elm Dictionary"
-    , body =
-        [ div []
-            [ div [] [ text "Elm Dictionary" ]
+    , body = 
+        [ H.div []
+            [ H.div [] [ H.text "Elm Dictionary" ]
             , viewInput "text" NewContent
-            , button [ onClick Search, attribute "data-cy" "submit"] [ text "Search" ]
+            , H.button [ A.onClick Search
+                          , A.attribute "data-cy" "submit"
+                          , A.css[ color (rgb 250 250 250) ]
+                          ] 
+                          [ H.text "Search" ]
             , viewResult model
             ]
         ]
@@ -159,61 +170,62 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Http.track "word" GotProgress
+    Sub.none
+    -- Http.track "word" GotProgress
 
 
-viewInput : String -> (String -> Msg) -> Html Msg
+viewInput : String -> (String -> Msg) -> Html.Html Msg
 viewInput t toMsg =
-    input [ type_ t, onInput toMsg, attribute "data-cy" "input" ] []
+    Hinput [ type_ t, onInput toMsg, attribute "data-cy" "input" ] []
 
 
-viewResult : Model -> Html Msg
+viewResult : Model -> Html.Html Msg
 viewResult model =
     case model.status of
         Initial ->
-            div [] [ text "" ]
+            H.div [] [ Html.text "" ]
 
         Success resp ->
             case resp of
                 Def d ->
-                    div []
-                        [ div [ attribute "data-cy" "word" ] [ text d.word ]
-                        , div [ attribute "data-cy" "fl" ] [ text d.fl ]
-                        , div [ attribute "data-cy" "def" ] [ text d.def ]
-                        , div [ attribute "data-cy" "isOffensive" ] [ checkOffense d.isOffensive ]
+                    H.div []
+                        [ H.div [ attribute "data-cy" "word" ] [ Html.text d.word ]
+                        , H.div [ attribute "data-cy" "fl" ] [ Html.text d.fl ]
+                        , H.div [ attribute "data-cy" "def" ] [ Html.text d.def ]
+                        , H.div [ attribute "data-cy" "isOffensive" ] [ checkOffense d.isOffensive ]
                         ]
 
                 Alt a ->
-                    div []
-                        [ text "Did you mean: "
-                        , div [] [ text a.first ]
-                        , div [] [ text a.second ]
-                        , div [] [ text a.third ]
-                        , div [] [ text a.fourth ]
+                    H.div []
+                        [ Html.text "Did you mean: "
+                        , H.div [] [ Html.text a.first ]
+                        , H.div [] [ Html.text a.second ]
+                        , H.div [] [ Html.text a.third ]
+                        , H.div [] [ Html.text a.fourth ]
                         ]
 
         Failure error ->
-            case error of 
-                Http.BadBody _->     
-                    div [ attribute "data-cy" "msg"] [ text "Invalid entries"  ]
+            case error of
+                Http.BadBody _ ->
+                    H.div [ attribute "data-cy" "msg" ] [ Html.text "Invalid entries" ]
 
-                Http.NetworkError -> 
-                    div [ attribute "data-cy" "msg"] [text "No internet connection" ]
-                
-                Http.BadStatus _ -> 
-                    div [ attribute "data-cy" "msg"] [text "Something's wrong with Merriam-Webster API, try later?" ]
+                Http.NetworkError ->
+                    H.div [ attribute "data-cy" "msg" ] [ Html.text "No internet connection" ]
 
-                Http.BadUrl _ -> 
-                    div [ attribute "data-cy" "msg"] [text "URL invalid" ]
-                
-                Http.Timeout -> 
-                    div [ attribute "data-cy" "msg"] [text "Time out, try again?" ]
-                
+                Http.BadStatus _ ->
+                    H.div [ attribute "data-cy" "msg" ] [ Html.text "Something's wrong with Merriam-Webster API, try later?" ]
 
-checkOffense : Bool -> Html msg
+                Http.BadUrl _ ->
+                    H.div [ attribute "data-cy" "msg" ] [ Html.text "URL invalid" ]
+
+                Http.Timeout ->
+                    H.div [ attribute "data-cy" "msg" ] [ Html.text "Time out, try again?" ]
+
+
+checkOffense : Bool -> Html.Html msg
 checkOffense b =
     if b == True then
-        text "Offensive: true"
+        Html.text "Offensive: true"
 
     else
-        text "Offensive: false"
+        Html.text "Offensive: false"
