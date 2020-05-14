@@ -8750,7 +8750,7 @@ var $rtfeldman$elm_css$Css$hex = function (str) {
 	return $rtfeldman$elm_css$Css$erroneousHex(str);
 };
 var $author$project$Main$theme = {
-	primary: $rtfeldman$elm_css$Css$hex('98d3e6'),
+	primary: $rtfeldman$elm_css$Css$hex('5bb8d7'),
 	secondary: A3($rtfeldman$elm_css$Css$rgb, 250, 240, 230)
 };
 var $rtfeldman$elm_css$VirtualDom$Styled$accumulateStyles = F2(
@@ -9603,7 +9603,7 @@ var $author$project$Main$view = function (model) {
 												[
 													$rtfeldman$elm_css$Css$backgroundColor($author$project$Main$theme.primary),
 													$rtfeldman$elm_css$Css$color(
-													A3($rtfeldman$elm_css$Css$rgb, 90, 90, 90)),
+													A3($rtfeldman$elm_css$Css$rgb, 10, 10, 10)),
 													$rtfeldman$elm_css$Css$padding(
 													$rtfeldman$elm_css$Css$px(8)),
 													$rtfeldman$elm_css$Css$marginLeft(
@@ -9616,7 +9616,7 @@ var $author$project$Main$view = function (model) {
 													$rtfeldman$elm_css$Css$boxShadow3,
 													$rtfeldman$elm_css$Css$px(1),
 													$rtfeldman$elm_css$Css$px(2),
-													A3($rtfeldman$elm_css$Css$rgb, 200, 200, 200)),
+													A3($rtfeldman$elm_css$Css$rgb, 150, 150, 150)),
 													$rtfeldman$elm_css$Css$hover(
 													_List_fromArray(
 														[
