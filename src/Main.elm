@@ -317,16 +317,16 @@ viewResult model =
                     H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ] ] [ H.text "Invalid entries" ]
 
                 Http.NetworkError ->
-                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "No internet connection" ]
+                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "No internet connection" ]
 
                 Http.BadStatus _ ->
-                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "Something's wrong with Merriam-Webster API, try later?" ]
+                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "Something's wrong with Merriam-Webster API, try later?" ]
 
                 Http.BadUrl _ ->
-                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "URL invalid" ]
+                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "URL invalid" ]
 
                 Http.Timeout ->
-                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "Time out, try again?" ]
+                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "Time out, try again?" ]
 
 
 checkOffense : Bool -> Html msg

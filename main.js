@@ -9469,7 +9469,10 @@ var $author$project$Main$viewResult = function (model) {
 						$rtfeldman$elm_css$Html$Styled$div,
 						_List_fromArray(
 							[
-								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg')
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg'),
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[$author$project$Main$errorMsg]))
 							]),
 						_List_fromArray(
 							[
@@ -9480,7 +9483,10 @@ var $author$project$Main$viewResult = function (model) {
 						$rtfeldman$elm_css$Html$Styled$div,
 						_List_fromArray(
 							[
-								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg')
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg'),
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[$author$project$Main$errorMsg]))
 							]),
 						_List_fromArray(
 							[
@@ -9491,7 +9497,10 @@ var $author$project$Main$viewResult = function (model) {
 						$rtfeldman$elm_css$Html$Styled$div,
 						_List_fromArray(
 							[
-								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg')
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg'),
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[$author$project$Main$errorMsg]))
 							]),
 						_List_fromArray(
 							[
@@ -9502,7 +9511,10 @@ var $author$project$Main$viewResult = function (model) {
 						$rtfeldman$elm_css$Html$Styled$div,
 						_List_fromArray(
 							[
-								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg')
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'msg'),
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[$author$project$Main$errorMsg]))
 							]),
 						_List_fromArray(
 							[
