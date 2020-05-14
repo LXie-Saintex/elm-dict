@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Debug
 -- import Html exposing (Html, button, div, input, text)
--- import Html.Attributes exposing (..)
+-- import Html.A.attributes exposing (..)
 -- import Html.Events exposing (onClick, onInput)
 import Http
 import Json.Decode as Decode exposing (Decoder, at, bool, index, map, map4, oneOf, string)
@@ -11,14 +11,15 @@ import Styles exposing (..)
 
 import Css exposing (..)
 import Html.Styled as H exposing (Html)
-import Html.Styled.Attributes as A 
+import Html.Styled.Attributes as A exposing(..)
+import Html.Styled.Events exposing(onClick, onInput)
 
 main =
     Browser.document
         { init = init
         , update = update
         , subscriptions = subscriptions
-        , view = view 
+        , view = view
         }
 
 
@@ -49,6 +50,35 @@ type alias Alternatives =
     , fourth : String
     }
 
+theme : { secondary : Color, primary : Color }
+theme =
+    { primary = hex "98d3e6"
+    , secondary = rgb 250 240 230
+    }
+paragraphFont : Style
+paragraphFont =
+    Css.batch
+        [ fontFamilies [ "Palatino Linotype", "Georgia", "serif" ] ]
+
+responseDiv : Style 
+responseDiv = 
+    Css.batch 
+        [ paragraphFont
+        , display block
+        , Css.width (pct 100)
+        , padding2 (px 50) (pct 10)
+        , marginTop (vh 10)
+        , lineHeight (px 20)
+        , borderTop3 (px 10) solid (rgb 255 255 255)
+        , boxSizing borderBox
+        ]
+
+errorMsg : Style 
+errorMsg = 
+    Css.batch 
+        [ paragraphFont
+        , marginTop (vh 10)
+        ]
 
 type Response
     = Def Definition
@@ -153,16 +183,54 @@ respDecoder =
 view : Model -> Browser.Document Msg
 view model =
     { title = "Elm Dictionary"
-    , body = 
-        [ H.div []
-            [ H.div [] [ H.text "Elm Dictionary" ]
-            , viewInput "text" NewContent
-            , H.button [ A.onClick Search
-                          , A.attribute "data-cy" "submit"
-                          , A.css[ color (rgb 250 250 250) ]
-                          ] 
-                          [ H.text "Search" ]
-            , viewResult model
+    , body = List.map H.toUnstyled 
+        [
+            H.div   [ A.css [ displayFlex
+                            , flexDirection column
+                            , Css.width (vw 50)
+                            , Css.height (vh 100)
+                            , justifyContent flexStart
+                            , alignItems center
+                            , margin2 zero auto
+                            , padding2 (px 50) zero
+                            , backgroundColor theme.secondary
+                            ]
+                    ]
+            [ H.h1  [ A.css [ paragraphFont
+                            , color theme.primary
+                            , textAlign center
+                            ]
+                    ]  
+                    [ H.text "Elm Dictionary" ]
+            , H.div [ A.css [ textAlign center
+                            , marginTop (px 20)
+                            ]
+                    ]
+                    [ H.input   [ A.type_ "text"
+                                , onInput NewContent
+                                , A.attribute "data-cy" "input"
+                                , A.css [ padding (px 5)
+                                        , fontSize (em 1.1)
+                                        ]
+                                ] []
+                    , H.button  [ onClick Search
+                                , A.attribute "data-cy" "submit"
+                                , A.css [ backgroundColor theme.primary
+                                        , color (rgb 90 90 90)
+                                        , padding (px 8)
+                                        , marginLeft (px 5)
+                                        , fontSize (em 0.9)
+                                        , border (px 0)
+                                        , boxShadow3 (px 1) (px 2) (rgb 200 200 200)
+                                        , hover 
+                                            [ textDecoration underline
+                                            , color (rgb 26 26 26)
+                                            ]
+                                        ]
+                                ] 
+                                [ H.text "Search" ]
+                    ]
+                , viewResult model
             ]
         ]
     }
@@ -174,58 +242,62 @@ subscriptions model =
     -- Http.track "word" GotProgress
 
 
-viewInput : String -> (String -> Msg) -> Html.Html Msg
-viewInput t toMsg =
-    Hinput [ type_ t, onInput toMsg, attribute "data-cy" "input" ] []
-
-
-viewResult : Model -> Html.Html Msg
+viewResult : Model -> Html msg
 viewResult model =
     case model.status of
         Initial ->
-            H.div [] [ Html.text "" ]
+            H.div [] [ H.text "" ]
 
         Success resp ->
             case resp of
                 Def d ->
-                    H.div []
-                        [ H.div [ attribute "data-cy" "word" ] [ Html.text d.word ]
-                        , H.div [ attribute "data-cy" "fl" ] [ Html.text d.fl ]
-                        , H.div [ attribute "data-cy" "def" ] [ Html.text d.def ]
-                        , H.div [ attribute "data-cy" "isOffensive" ] [ checkOffense d.isOffensive ]
-                        ]
+                    H.div   [ A.css [ responseDiv ] ]
+                            [ H.div [ A.attribute "data-cy" "word"
+                                    , A.css [ fontSize (em 1.1)
+                                            , textTransform capitalize
+                                            ]
+                                    ] 
+                                    [ H.text d.word ]
+                            , H.div [ A.attribute "data-cy" "fl"
+                                    , A.css [ color (rgb 100 100 100) 
+                                            , margin2 (px 20) zero
+                                            ]
+                                    ] [ H.text d.fl ]
+                            , H.div [ A.attribute "data-cy" "def" ] [ H.text d.def ]
+                            , H.div [ A.attribute "data-cy" "isOffensive" ] [ checkOffense d.isOffensive ]
+                            ]
 
                 Alt a ->
-                    H.div []
-                        [ Html.text "Did you mean: "
-                        , H.div [] [ Html.text a.first ]
-                        , H.div [] [ Html.text a.second ]
-                        , H.div [] [ Html.text a.third ]
-                        , H.div [] [ Html.text a.fourth ]
+                    H.div [ A.css [responseDiv] ]
+                        [ H.div [ A.css [ margin2 (px 10) zero] ][ H.text "Did you mean: "]
+                        , H.div [] [ H.text a.first ]
+                        , H.div [] [ H.text a.second ]
+                        , H.div [] [ H.text a.third ]
+                        , H.div [] [ H.text a.fourth ]
                         ]
 
         Failure error ->
             case error of
                 Http.BadBody _ ->
-                    H.div [ attribute "data-cy" "msg" ] [ Html.text "Invalid entries" ]
+                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ] ] [ H.text "Invalid entries" ]
 
                 Http.NetworkError ->
-                    H.div [ attribute "data-cy" "msg" ] [ Html.text "No internet connection" ]
+                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "No internet connection" ]
 
                 Http.BadStatus _ ->
-                    H.div [ attribute "data-cy" "msg" ] [ Html.text "Something's wrong with Merriam-Webster API, try later?" ]
+                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "Something's wrong with Merriam-Webster API, try later?" ]
 
                 Http.BadUrl _ ->
-                    H.div [ attribute "data-cy" "msg" ] [ Html.text "URL invalid" ]
+                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "URL invalid" ]
 
                 Http.Timeout ->
-                    H.div [ attribute "data-cy" "msg" ] [ Html.text "Time out, try again?" ]
+                    H.div [ A.attribute "data-cy" "msg" ] [ H.text "Time out, try again?" ]
 
 
-checkOffense : Bool -> Html.Html msg
+checkOffense : Bool -> Html msg
 checkOffense b =
     if b == True then
-        Html.text "Offensive: true"
+        H.text "Offensive: true"
 
     else
-        Html.text "Offensive: false"
+        H.text "Offensive: false"
