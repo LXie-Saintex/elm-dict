@@ -1,18 +1,14 @@
 module Main exposing (..)
 
 import Browser
+import Css exposing (..)
 import Debug
--- import Html exposing (Html, button, div, input, text)
--- import Html.A.attributes exposing (..)
--- import Html.Events exposing (onClick, onInput)
+import Html.Styled as H exposing (Html)
+import Html.Styled.Attributes as A exposing (..)
+import Html.Styled.Events exposing (onClick, onInput)
 import Http
 import Json.Decode as Decode exposing (Decoder, at, bool, index, map, map4, oneOf, string)
-import Styles exposing (..)
 
-import Css exposing (..)
-import Html.Styled as H exposing (Html)
-import Html.Styled.Attributes as A exposing(..)
-import Html.Styled.Events exposing(onClick, onInput)
 
 main =
     Browser.document
@@ -50,19 +46,23 @@ type alias Alternatives =
     , fourth : String
     }
 
+
 theme : { secondary : Color, primary : Color }
 theme =
     { primary = hex "98d3e6"
     , secondary = rgb 250 240 230
     }
+
+
 paragraphFont : Style
 paragraphFont =
     Css.batch
         [ fontFamilies [ "Palatino Linotype", "Georgia", "serif" ] ]
 
-responseDiv : Style 
-responseDiv = 
-    Css.batch 
+
+responseDiv : Style
+responseDiv =
+    Css.batch
         [ paragraphFont
         , display block
         , Css.width (pct 100)
@@ -73,12 +73,22 @@ responseDiv =
         , boxSizing borderBox
         ]
 
-errorMsg : Style 
-errorMsg = 
-    Css.batch 
+
+errorMsg : Style
+errorMsg =
+    Css.batch
         [ paragraphFont
         , marginTop (vh 10)
         ]
+
+
+sideNote : Style
+sideNote =
+    Css.batch
+        [ color (rgb 100 100 100)
+        , margin2 (px 20) zero
+        ]
+
 
 type Response
     = Def Definition
@@ -96,7 +106,10 @@ type Msg
     = Search
     | NewContent String
     | GotDef (Result Http.Error Response)
-    -- | GotProgress Http.Progress
+
+
+
+-- | GotProgress Http.Progress
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -112,6 +125,7 @@ update msg model =
                 , expect = Http.expectJson GotDef respDecoder
                 , timeout = Just 2000.0
                 , tracker = Nothing
+
                 -- , tracker = Just "word"
                 }
             )
@@ -138,18 +152,20 @@ update msg model =
                 Err error ->
                     ( { model | status = Failure error }, Cmd.none )
 
-        -- GotProgress p ->
-        --     case p of 
-        --         Http.Sending s -> 
-        --             if Http.fractionSent s /= 0.0 then
-        --                 (model, Http.cancel "word")
-        --             else 
-        --                 (model, Cmd.none)
 
-        --         Http.Receiving _-> 
-        --             (model, Cmd.none)
 
+-- GotProgress p ->
+--     case p of
+--         Http.Sending s ->
+--             if Http.fractionSent s /= 0.0 then
+--                 (model, Http.cancel "word")
+--             else
+--                 (model, Cmd.none)
+--         Http.Receiving _->
+--             (model, Cmd.none)
 -- newReq : String -> Model -> List String
+
+
 defDecoder : Decoder Response
 defDecoder =
     Decode.map Def
@@ -183,63 +199,77 @@ respDecoder =
 view : Model -> Browser.Document Msg
 view model =
     { title = "Elm Dictionary"
-    , body = List.map H.toUnstyled 
-        [
-            H.div   [ A.css [ displayFlex
-                            , flexDirection column
-                            , Css.width (vw 50)
-                            , Css.height (vh 100)
-                            , justifyContent flexStart
-                            , alignItems center
-                            , margin2 zero auto
-                            , padding2 (px 50) zero
-                            , backgroundColor theme.secondary
-                            ]
+    , body =
+        List.map H.toUnstyled
+            [ H.div
+                [ A.css
+                    [ displayFlex
+                    , flexDirection column
+                    , Css.width (vw 50)
+                    , Css.height (vh 100)
+                    , justifyContent flexStart
+                    , alignItems center
+                    , margin2 zero auto
+                    , padding2 (px 50) zero
+                    , backgroundColor theme.secondary
                     ]
-            [ H.h1  [ A.css [ paragraphFont
-                            , color theme.primary
-                            , textAlign center
-                            ]
-                    ]  
+                ]
+                [ H.h1
+                    [ A.css
+                        [ paragraphFont
+                        , color theme.primary
+                        , textAlign center
+                        ]
+                    ]
                     [ H.text "Elm Dictionary" ]
-            , H.div [ A.css [ textAlign center
-                            , marginTop (px 20)
-                            ]
+                , H.div
+                    [ A.css
+                        [ textAlign center
+                        , marginTop (px 20)
+                        ]
                     ]
-                    [ H.input   [ A.type_ "text"
-                                , onInput NewContent
-                                , A.attribute "data-cy" "input"
-                                , A.css [ padding (px 5)
-                                        , fontSize (em 1.1)
-                                        ]
-                                ] []
-                    , H.button  [ onClick Search
-                                , A.attribute "data-cy" "submit"
-                                , A.css [ backgroundColor theme.primary
-                                        , color (rgb 90 90 90)
-                                        , padding (px 8)
-                                        , marginLeft (px 5)
-                                        , fontSize (em 0.9)
-                                        , border (px 0)
-                                        , boxShadow3 (px 1) (px 2) (rgb 200 200 200)
-                                        , hover 
-                                            [ textDecoration underline
-                                            , color (rgb 26 26 26)
-                                            ]
-                                        ]
-                                ] 
-                                [ H.text "Search" ]
+                    [ H.input
+                        [ A.type_ "text"
+                        , onInput NewContent
+                        , A.attribute "data-cy" "input"
+                        , A.css
+                            [ padding (px 5)
+                            , fontSize (em 1.1)
+                            ]
+                        ]
+                        []
+                    , H.button
+                        [ onClick Search
+                        , A.attribute "data-cy" "submit"
+                        , A.css
+                            [ backgroundColor theme.primary
+                            , color (rgb 90 90 90)
+                            , padding (px 8)
+                            , marginLeft (px 5)
+                            , fontSize (em 0.9)
+                            , border (px 0)
+                            , boxShadow3 (px 1) (px 2) (rgb 200 200 200)
+                            , hover
+                                [ textDecoration underline
+                                , color (rgb 26 26 26)
+                                ]
+                            ]
+                        ]
+                        [ H.text "Search" ]
                     ]
                 , viewResult model
+                ]
             ]
-        ]
     }
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
-    -- Http.track "word" GotProgress
+
+
+
+-- Http.track "word" GotProgress
 
 
 viewResult : Model -> Html msg
@@ -251,25 +281,30 @@ viewResult model =
         Success resp ->
             case resp of
                 Def d ->
-                    H.div   [ A.css [ responseDiv ] ]
-                            [ H.div [ A.attribute "data-cy" "word"
-                                    , A.css [ fontSize (em 1.1)
-                                            , textTransform capitalize
-                                            ]
-                                    ] 
-                                    [ H.text d.word ]
-                            , H.div [ A.attribute "data-cy" "fl"
-                                    , A.css [ color (rgb 100 100 100) 
-                                            , margin2 (px 20) zero
-                                            ]
-                                    ] [ H.text d.fl ]
-                            , H.div [ A.attribute "data-cy" "def" ] [ H.text d.def ]
-                            , H.div [ A.attribute "data-cy" "isOffensive" ] [ checkOffense d.isOffensive ]
+                    H.div [ A.css [ responseDiv ] ]
+                        [ H.div
+                            [ A.attribute "data-cy" "word"
+                            , A.css
+                                [ fontSize (em 1.1)
+                                , textTransform capitalize
+                                ]
                             ]
+                            [ H.text d.word ]
+                        , H.div
+                            [ A.attribute "data-cy" "fl"
+                            , A.css [ sideNote ]
+                            ]
+                            [ H.text d.fl ]
+                        , H.div [ A.attribute "data-cy" "def" ] [ H.text d.def ]
+                        , H.div [ A.attribute "data-cy" "isOffensive"
+                                , A.css [ sideNote ] 
+                                ] 
+                                [ checkOffense d.isOffensive ]
+                        ]
 
                 Alt a ->
-                    H.div [ A.css [responseDiv] ]
-                        [ H.div [ A.css [ margin2 (px 10) zero] ][ H.text "Did you mean: "]
+                    H.div [ A.css [ responseDiv ] ]
+                        [ H.div [ A.css [ margin2 (px 10) zero ] ] [ H.text "Did you mean: " ]
                         , H.div [] [ H.text a.first ]
                         , H.div [] [ H.text a.second ]
                         , H.div [] [ H.text a.third ]
