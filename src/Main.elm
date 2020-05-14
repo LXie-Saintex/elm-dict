@@ -49,7 +49,7 @@ type alias Alternatives =
 
 theme : { secondary : Color, primary : Color }
 theme =
-    { primary = hex "98d3e6"
+    { primary = hex "5bb8d7"
     , secondary = rgb 250 240 230
     }
 
@@ -243,12 +243,12 @@ view model =
                         , A.attribute "data-cy" "submit"
                         , A.css
                             [ backgroundColor theme.primary
-                            , color (rgb 90 90 90)
+                            , color (rgb 10 10 10)
                             , padding (px 8)
                             , marginLeft (px 5)
                             , fontSize (em 0.9)
                             , border (px 0)
-                            , boxShadow3 (px 1) (px 2) (rgb 200 200 200)
+                            , boxShadow3 (px 1) (px 2) (rgb 150 150 150)
                             , hover
                                 [ textDecoration underline
                                 , color (rgb 26 26 26)
