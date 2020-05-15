@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Css exposing (..)
+import Css.Media as M exposing (only, screen, maxWidth, minWidth, withMedia)
 import Debug
 import Html.Styled as H exposing (Html)
 import Html.Styled.Attributes as A exposing (..)
@@ -89,6 +90,10 @@ sideNote =
         , margin2 (px 20) zero
         ]
 
+altWords : Style 
+altWords = 
+    Css.batch
+        [ margin2 (px 10) zero ]
 
 type Response
     = Def Definition
@@ -212,6 +217,8 @@ view model =
                     , margin2 zero auto
                     , padding2 (px 50) zero
                     , backgroundColor theme.secondary
+                    , withMedia [ only screen [ M.minWidth (px 360), M.maxWidth (px 980)] ]
+                                [ Css.width (vw 90), fontSize (em 1.5), lineHeight (px 20) ]
                     ]
                 ]
                 [ H.h1
@@ -304,11 +311,11 @@ viewResult model =
 
                 Alt a ->
                     H.div [ A.css [ responseDiv ] ]
-                        [ H.div [ A.css [ margin2 (px 10) zero ] ] [ H.text "Did you mean: " ]
-                        , H.div [] [ H.text a.first ]
-                        , H.div [] [ H.text a.second ]
-                        , H.div [] [ H.text a.third ]
-                        , H.div [] [ H.text a.fourth ]
+                        [ H.div [ A.css [altWords] ] [ H.text "Did you mean: " ]
+                        , H.div [ A.css [altWords]  ] [ H.text a.first ]
+                        , H.div [ A.css [altWords]  ] [ H.text a.second ]
+                        , H.div [ A.css [altWords]  ] [ H.text a.third ]
+                        , H.div [ A.css [altWords]  ] [ H.text a.fourth ]
                         ]
 
         Failure error ->
