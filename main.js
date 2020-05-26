@@ -8227,6 +8227,22 @@ var $rtfeldman$elm_css$Css$em = A2($rtfeldman$elm_css$Css$Internal$lengthConvert
 var $rtfeldman$elm_css$Css$flexDirection = $rtfeldman$elm_css$Css$prop1('flex-direction');
 var $rtfeldman$elm_css$Css$flexStart = $rtfeldman$elm_css$Css$prop1('flex-start');
 var $rtfeldman$elm_css$Css$fontSize = $rtfeldman$elm_css$Css$prop1('font-size');
+var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
+	function (key, value) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$property, key, value),
+			_List_Nil,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$for = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('htmlFor');
 var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
 var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
 var $rtfeldman$elm_css$Css$Preprocess$ExtendSelector = F2(
@@ -8249,6 +8265,8 @@ var $rtfeldman$elm_css$Css$justifyContent = function (fn) {
 		'justify-content',
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
+var $rtfeldman$elm_css$Html$Styled$label = $rtfeldman$elm_css$Html$Styled$node('label');
+var $rtfeldman$elm_css$Css$lineHeight = $rtfeldman$elm_css$Css$prop1('line-height');
 var $rtfeldman$elm_css$Css$prop2 = F3(
 	function (key, argA, argB) {
 		return A2(
@@ -8263,6 +8281,20 @@ var $rtfeldman$elm_css$Css$prop2 = F3(
 var $rtfeldman$elm_css$Css$margin2 = $rtfeldman$elm_css$Css$prop2('margin');
 var $rtfeldman$elm_css$Css$marginLeft = $rtfeldman$elm_css$Css$prop1('margin-left');
 var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
+var $rtfeldman$elm_css$Css$Media$feature = F2(
+	function (key, _v0) {
+		var value = _v0.value;
+		return {
+			feature: key,
+			value: $elm$core$Maybe$Just(value)
+		};
+	});
+var $rtfeldman$elm_css$Css$Media$maxWidth = function (value) {
+	return A2($rtfeldman$elm_css$Css$Media$feature, 'max-width', value);
+};
+var $rtfeldman$elm_css$Css$Media$minWidth = function (value) {
+	return A2($rtfeldman$elm_css$Css$Media$feature, 'min-width', value);
+};
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -8315,6 +8347,11 @@ var $rtfeldman$elm_css$Html$Styled$Events$onInput = function (tagger) {
 			$rtfeldman$elm_css$Html$Styled$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $rtfeldman$elm_css$Html$Styled$Events$targetValue)));
 };
+var $rtfeldman$elm_css$Css$Structure$OnlyQuery = F2(
+	function (a, b) {
+		return {$: 'OnlyQuery', a: a, b: b};
+	});
+var $rtfeldman$elm_css$Css$Media$only = $rtfeldman$elm_css$Css$Structure$OnlyQuery;
 var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
 var $rtfeldman$elm_css$Css$padding2 = $rtfeldman$elm_css$Css$prop2('padding');
 var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
@@ -8366,6 +8403,8 @@ var $rtfeldman$elm_css$Css$rgb = F3(
 						[r, g, b])))
 		};
 	});
+var $rtfeldman$elm_css$Css$Structure$Screen = {$: 'Screen'};
+var $rtfeldman$elm_css$Css$Media$screen = $rtfeldman$elm_css$Css$Structure$Screen;
 var $rtfeldman$elm_css$VirtualDom$Styled$Unstyled = function (a) {
 	return {$: 'Unstyled', a: a};
 };
@@ -8750,8 +8789,8 @@ var $rtfeldman$elm_css$Css$hex = function (str) {
 	return $rtfeldman$elm_css$Css$erroneousHex(str);
 };
 var $author$project$Main$theme = {
-	primary: $rtfeldman$elm_css$Css$hex('5bb8d7'),
-	secondary: A3($rtfeldman$elm_css$Css$rgb, 250, 240, 230)
+	primary: $rtfeldman$elm_css$Css$hex('0a0a09'),
+	secondary: $rtfeldman$elm_css$Css$hex('f7f7f2')
 };
 var $rtfeldman$elm_css$VirtualDom$Styled$accumulateStyles = F2(
 	function (_v0, styles) {
@@ -9234,25 +9273,20 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
-var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
-	function (key, value) {
-		return A3(
-			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
-			A2($elm$virtual_dom$VirtualDom$property, key, value),
-			_List_Nil,
-			'');
-	});
-var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			$rtfeldman$elm_css$VirtualDom$Styled$property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
 var $rtfeldman$elm_css$Html$Styled$Attributes$type_ = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('type');
 var $rtfeldman$elm_css$Css$underline = {textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'underline'};
 var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
 var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
+var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
+var $rtfeldman$elm_css$Css$zero = {length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, number: $rtfeldman$elm_css$Css$Structure$Compatible, numericValue: 0, outline: $rtfeldman$elm_css$Css$Structure$Compatible, unitLabel: '', units: $rtfeldman$elm_css$Css$UnitlessInteger, value: '0'};
+var $author$project$Main$altWords = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			A2(
+			$rtfeldman$elm_css$Css$margin2,
+			$rtfeldman$elm_css$Css$px(10),
+			$rtfeldman$elm_css$Css$zero)
+		]));
 var $rtfeldman$elm_css$Css$capitalize = {textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'capitalize'};
 var $author$project$Main$checkOffense = function (b) {
 	return b ? $rtfeldman$elm_css$Html$Styled$text('Offensive: true') : $rtfeldman$elm_css$Html$Styled$text('Offensive: false');
@@ -9269,7 +9303,6 @@ var $rtfeldman$elm_css$Css$borderBox = {backgroundClip: $rtfeldman$elm_css$Css$S
 var $rtfeldman$elm_css$Css$borderTop3 = $rtfeldman$elm_css$Css$prop3('border-top');
 var $rtfeldman$elm_css$Css$boxSizing = $rtfeldman$elm_css$Css$prop1('box-sizing');
 var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
-var $rtfeldman$elm_css$Css$lineHeight = $rtfeldman$elm_css$Css$prop1('line-height');
 var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
 var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
 var $rtfeldman$elm_css$Css$solid = {borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'solid'};
@@ -9296,8 +9329,6 @@ var $author$project$Main$responseDiv = $rtfeldman$elm_css$Css$batch(
 			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255)),
 			$rtfeldman$elm_css$Css$boxSizing($rtfeldman$elm_css$Css$borderBox)
 		]));
-var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
-var $rtfeldman$elm_css$Css$zero = {length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, number: $rtfeldman$elm_css$Css$Structure$Compatible, numericValue: 0, outline: $rtfeldman$elm_css$Css$Structure$Compatible, unitLabel: '', units: $rtfeldman$elm_css$Css$UnitlessInteger, value: '0'};
 var $author$project$Main$sideNote = $rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
 		[
@@ -9406,12 +9437,7 @@ var $author$project$Main$viewResult = function (model) {
 								[
 									$rtfeldman$elm_css$Html$Styled$Attributes$css(
 									_List_fromArray(
-										[
-											A2(
-											$rtfeldman$elm_css$Css$margin2,
-											$rtfeldman$elm_css$Css$px(10),
-											$rtfeldman$elm_css$Css$zero)
-										]))
+										[$author$project$Main$altWords]))
 								]),
 							_List_fromArray(
 								[
@@ -9419,28 +9445,48 @@ var $author$project$Main$viewResult = function (model) {
 								])),
 							A2(
 							$rtfeldman$elm_css$Html$Styled$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(
+									_List_fromArray(
+										[$author$project$Main$altWords]))
+								]),
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Html$Styled$text(a.first)
 								])),
 							A2(
 							$rtfeldman$elm_css$Html$Styled$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(
+									_List_fromArray(
+										[$author$project$Main$altWords]))
+								]),
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Html$Styled$text(a.second)
 								])),
 							A2(
 							$rtfeldman$elm_css$Html$Styled$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(
+									_List_fromArray(
+										[$author$project$Main$altWords]))
+								]),
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Html$Styled$text(a.third)
 								])),
 							A2(
 							$rtfeldman$elm_css$Html$Styled$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(
+									_List_fromArray(
+										[$author$project$Main$altWords]))
+								]),
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Html$Styled$text(a.fourth)
@@ -9525,6 +9571,11 @@ var $author$project$Main$viewResult = function (model) {
 };
 var $rtfeldman$elm_css$Css$VwUnits = {$: 'VwUnits'};
 var $rtfeldman$elm_css$Css$vw = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VwUnits, 'vw');
+var $rtfeldman$elm_css$Css$Preprocess$WithMedia = F2(
+	function (a, b) {
+		return {$: 'WithMedia', a: a, b: b};
+	});
+var $rtfeldman$elm_css$Css$Media$withMedia = $rtfeldman$elm_css$Css$Preprocess$WithMedia;
 var $author$project$Main$view = function (model) {
 	return {
 		body: A2(
@@ -9552,7 +9603,31 @@ var $author$project$Main$view = function (model) {
 									$rtfeldman$elm_css$Css$padding2,
 									$rtfeldman$elm_css$Css$px(50),
 									$rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$backgroundColor($author$project$Main$theme.secondary)
+									$rtfeldman$elm_css$Css$backgroundColor($author$project$Main$theme.secondary),
+									A2(
+									$rtfeldman$elm_css$Css$Media$withMedia,
+									_List_fromArray(
+										[
+											A2(
+											$rtfeldman$elm_css$Css$Media$only,
+											$rtfeldman$elm_css$Css$Media$screen,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Css$Media$minWidth(
+													$rtfeldman$elm_css$Css$px(360)),
+													$rtfeldman$elm_css$Css$Media$maxWidth(
+													$rtfeldman$elm_css$Css$px(980))
+												]))
+										]),
+									_List_fromArray(
+										[
+											$rtfeldman$elm_css$Css$width(
+											$rtfeldman$elm_css$Css$vw(90)),
+											$rtfeldman$elm_css$Css$fontSize(
+											$rtfeldman$elm_css$Css$em(1.5)),
+											$rtfeldman$elm_css$Css$lineHeight(
+											$rtfeldman$elm_css$Css$px(20))
+										]))
 								]))
 						]),
 					_List_fromArray(
@@ -9588,12 +9663,20 @@ var $author$project$Main$view = function (model) {
 							_List_fromArray(
 								[
 									A2(
+									$rtfeldman$elm_css$Html$Styled$label,
+									_List_fromArray(
+										[
+											$rtfeldman$elm_css$Html$Styled$Attributes$for('userInput')
+										]),
+									_List_Nil),
+									A2(
 									$rtfeldman$elm_css$Html$Styled$input,
 									_List_fromArray(
 										[
 											$rtfeldman$elm_css$Html$Styled$Attributes$type_('text'),
 											$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Main$NewContent),
 											A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'data-cy', 'input'),
+											A2($rtfeldman$elm_css$Html$Styled$Attributes$attribute, 'id', 'userInput'),
 											$rtfeldman$elm_css$Html$Styled$Attributes$css(
 											_List_fromArray(
 												[
@@ -9614,8 +9697,7 @@ var $author$project$Main$view = function (model) {
 											_List_fromArray(
 												[
 													$rtfeldman$elm_css$Css$backgroundColor($author$project$Main$theme.primary),
-													$rtfeldman$elm_css$Css$color(
-													A3($rtfeldman$elm_css$Css$rgb, 10, 10, 10)),
+													$rtfeldman$elm_css$Css$color($author$project$Main$theme.secondary),
 													$rtfeldman$elm_css$Css$padding(
 													$rtfeldman$elm_css$Css$px(8)),
 													$rtfeldman$elm_css$Css$marginLeft(
@@ -9632,9 +9714,7 @@ var $author$project$Main$view = function (model) {
 													$rtfeldman$elm_css$Css$hover(
 													_List_fromArray(
 														[
-															$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$underline),
-															$rtfeldman$elm_css$Css$color(
-															A3($rtfeldman$elm_css$Css$rgb, 26, 26, 26))
+															$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$underline)
 														]))
 												]))
 										]),
