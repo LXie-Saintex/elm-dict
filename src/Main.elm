@@ -50,8 +50,8 @@ type alias Alternatives =
 
 theme : { secondary : Color, primary : Color }
 theme =
-    { primary = hex "5bb8d7"
-    , secondary = rgb 250 240 230
+    { primary = hex "0a0a09"
+    , secondary = hex "f7f7f2"
     }
 
 
@@ -250,16 +250,14 @@ view model =
                         , A.attribute "data-cy" "submit"
                         , A.css
                             [ backgroundColor theme.primary
-                            , color (rgb 10 10 10)
+                            , color theme.secondary
                             , padding (px 8)
                             , marginLeft (px 5)
                             , fontSize (em 0.9)
                             , border (px 0)
                             , boxShadow3 (px 1) (px 2) (rgb 150 150 150)
                             , hover
-                                [ textDecoration underline
-                                , color (rgb 26 26 26)
-                                ]
+                                [ textDecoration underline ]
                             ]
                         ]
                         [ H.text "Search" ]
