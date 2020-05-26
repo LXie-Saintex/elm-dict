@@ -3,7 +3,6 @@ module Main exposing (..)
 import Browser
 import Css exposing (..)
 import Css.Media as M exposing (only, screen, maxWidth, minWidth, withMedia)
-import Debug
 import Html.Styled as H exposing (Html)
 import Html.Styled.Attributes as A exposing (..)
 import Html.Styled.Events exposing (onClick, onInput)
@@ -235,15 +234,17 @@ view model =
                         , marginTop (px 20)
                         ]
                     ]
-                    [ H.input
-                        [ A.type_ "text"
-                        , onInput NewContent
-                        , A.attribute "data-cy" "input"
-                        , A.css
-                            [ padding (px 5)
-                            , fontSize (em 1.1)
+                    [ H.label [ A.for "userInput" ] []
+                    , H.input
+                            [ A.type_ "text"
+                            , onInput NewContent
+                            , A.attribute "data-cy" "input"
+                            , A.attribute "id" "userInput"
+                            , A.css
+                                [ padding (px 5)
+                                , fontSize (em 1.1)
+                                ]
                             ]
-                        ]
                         []
                     , H.button
                         [ onClick Search
