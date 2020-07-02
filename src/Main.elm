@@ -136,15 +136,15 @@ update msg model =
 
         NewContent s ->
             let
-                root =
-                    "https://www.dictionaryapi.com/api/v3/references/learners/json/"
+                root = "http://localhost:8080/search/"
+                --     "https://www.dictionaryapi.com/api/v3/references/learners/json/"
 
-                key =
-                    "24375962-78c5-4fbc-a585-b37ed4088caf"
+                -- key =
+                --     "24375962-78c5-4fbc-a585-b37ed4088caf"
 
                 request : String -> String
                 request word =
-                    root ++ word ++ "?key=" ++ key
+                    root ++ word
             in
             ( { model | url = request s }, Cmd.none )
 
@@ -323,7 +323,7 @@ viewResult model =
                     H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ] ] [ H.text "Invalid entries" ]
 
                 Http.NetworkError ->
-                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "No internet connection" ]
+                    H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "Network Error" ]
 
                 Http.BadStatus _ ->
                     H.div [ A.attribute "data-cy" "msg", A.css [ errorMsg ]  ] [ H.text "Something's wrong with Merriam-Webster API, try later?" ]

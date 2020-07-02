@@ -1,0 +1,27 @@
+{
+  "name": "elm-dict",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "elm-test",
+    "integration:test": "$(npm bin)/cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LXie-Saintex/elm-dict.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LXie-Saintex/elm-dict/issues"
+  },
+  "homepage": "https://github.com/LXie-Saintex/elm-dict#readme",
+  "devDependencies": {
+    "cypress": "^4.9.0"
+  }
+}
