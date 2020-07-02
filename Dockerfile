@@ -1,8 +1,4 @@
 FROM node:current-slim
-
-ENV app /usr/src/app/
-WORKDIR ${app}
-
 ADD package.json .
 RUN npm install
 
