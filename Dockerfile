@@ -3,13 +3,12 @@ FROM node:current-slim
 ENV app /usr/src/app/
 WORKDIR ${app}
 
-COPY package.json .
+ADD package.json .
 RUN npm install
 
 FROM codesimple/elm:0.19
-COPY elm.json .
+ADD elm.json .
 
 COPY . .
 EXPOSE 8080
-CMD [ "make", "serve"]
-COPY . . 
+CMD [ "make", "dev"]

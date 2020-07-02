@@ -7,8 +7,11 @@ serve:
 unit-test:
 	@npx elm-test 
 
+dev: 
+	@make compile && make serve
+
 e2e-test: 
-	@make compile && make serve && npm run integration:test
+	@make dev && npm run integration:test
 
 tidyup:
 	@sudo lsof -ti :8000 | xargs kill -9
