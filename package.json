@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "scripts": {
+    "start": "node server.js",
     "test": "elm-test",
     "integration:test": "$(npm bin)/cypress open"
   },
@@ -21,6 +22,10 @@
     "url": "https://github.com/LXie-Saintex/elm-dict/issues"
   },
   "homepage": "https://github.com/LXie-Saintex/elm-dict#readme",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "express": "^4.13.3"
+  },
   "devDependencies": {
     "cypress": "^4.9.0"
   }
