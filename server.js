@@ -12,5 +12,5 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + './index.html'));
 });
 
-app.listen(8080);
-console.log('Magic happens on port 8080...');
+app.listen(8000);
+console.log("elm dictionary listenting at port 8000: ")

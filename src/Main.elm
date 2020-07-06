@@ -136,11 +136,7 @@ update msg model =
 
         NewContent s ->
             let
-                root = "http://localhost:8080/search/"
-                --     "https://www.dictionaryapi.com/api/v3/references/learners/json/"
-
-                -- key =
-                --     "24375962-78c5-4fbc-a585-b37ed4088caf"
+                root = "http://localhost:5000/search/"
 
                 request : String -> String
                 request word =
