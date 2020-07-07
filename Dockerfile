@@ -5,8 +5,7 @@ RUN elm make src/Main.elm --optimize --output=main.js
 
 FROM node:current-slim
 ADD package.json .
-RUN npm install
+RUN npm install --only=prod
 
 COPY . .
-EXPOSE 8080
 CMD [ "npm", "start"]
